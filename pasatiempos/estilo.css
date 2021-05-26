@@ -1,0 +1,222 @@
+
+    /**TABLERO DEL PASATIEMPO**/
+
+table{
+   table-layout: fixed;
+   border-collapse: collapse;
+ 
+}
+td{
+    border: 2px solid black;
+    border-collapse: collapse; 
+    /*padding: 6px;*/
+}
+
+.tablero{
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+    width: 25px; /*tamaño casillas tablero 25x25*/
+    height: 25px;
+    font-size: 25px;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: 500;
+}
+
+#general{
+    margin: auto;
+    width: 34%;
+    padding: 10px;
+
+}
+
+
+
+
+
+
+
+
+
+    /**CUERPO DE LA PÁGINA WEB**/
+
+
+
+body{
+    border-top: 3px solid #1b7f9b;
+    /*padding: 20px;*/
+    width: 550px; /*Para que case con el modelo dado a seguir*/
+    /*width:30%;*/
+    margin:0 auto; /*para que el juego quede centrado*/
+    
+}
+
+
+
+
+
+
+
+
+
+
+    /**ENCABEZADOS, DESCRIPCION Y DEFINICIONES DE LAS PISTAS**/
+
+
+
+#MenosCursivo{
+    font-weight: bolder;
+    text-align: justify;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+h1{
+    font-family: 'Lucida Sans', sans-serif;
+    font-size: 30px;
+    color: #1b7f9b;
+}
+h2{
+    font-family: 'Lucida Sans', sans-serif;
+    font-size: 15px;
+}
+
+#descripcion{
+    font-size: 15.5px;
+    text-align: justify;
+    font-family: Arial, Helvetica, sans-serif;
+
+}
+
+
+
+
+
+
+
+
+
+
+    /**AYUDA A LA RESOLUCION DEL PASATIEMPO - BÚSQUEDA DE PALABRAS**/
+
+
+
+#inputPistas {
+    width: 20%;
+    font-size: 15px;
+    padding: 6px 10px; /*darle aire al campo*/
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 3px solid #1b7f9b;
+  }
+
+#labelInputPistas{
+    font-family: 'Lucida Sans', sans-serif;
+    font-size: 20px;
+    color: #1b7f9b;
+}
+
+#pistasRestantes{
+    font-family: 'Lucida Sans', sans-serif;
+    font-size: 20px;
+    color: #1b7f9b;   
+}
+
+
+.Boton1{
+    font-size: 15px;
+    padding: 8px; /*alto boton*/
+    width: 30%;
+    background-color: #1b7f9b; 
+    border: none; /*sin borde*/
+    color: white; /*color del texto*/
+    text-align: center; /*alineado en el centro del boton*/
+    border-radius: 8px; /*borde redondeado*/
+}
+
+
+
+
+
+    /**LISTA GENERADA CON PISTAS VIA JAVASCRIPT**/
+
+
+
+ul {
+    list-style-type: none; /*quitar marcador entrada lista*/
+    text-align: center;
+    /*Margen y padding por defecto del ul fuera*/
+    margin: 0;
+    padding: 0;
+  }
+
+  ul li {
+    padding: 10px;
+    font-family: 'Lucida Sans', sans-serif;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 3px solid #1b7f9b;;
+  }
+
+
+#pistasLista{
+    /*border-top: 3px solid #1b7f9b;*/
+    width: 50%;
+    height: 210px;
+    overflow: auto; /*que salga un scroll si es muy grande la lista*/
+
+    /*Margen y padding por defecto del div fuera*/
+    margin: 0;
+    padding: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+    /**ALERTA ALMACENAMIENTO LOCAL**/
+
+
+#somosLasCookies {
+    padding: 20px;
+    border-top: 2px;
+    background-color: whitesmoke;
+    color: black;
+    width: 540px; /*Mismo ancho que el cuerpo de la página*/
+    border-radius: 8px; /*borde redondeado*/
+
+    /*Para que flote abajo de la pagina*/
+    position: fixed; 
+    bottom: 0;
+}
+  
+#equisDeCierre {
+    margin-left: 15px;
+    color: #1b7f9b;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.Boton{
+    font-size: 15px;
+    padding: 8px; /*alto boton*/
+    width: 18%;
+    background-color: #1b7f9b; 
+    border: none; /*sin borde*/
+    color: white; /*color del texto*/
+    text-align: center; /*alineado en el centro del boton*/
+    border-radius: 8px; /*borde redondeado*/
+}
+
