@@ -680,11 +680,68 @@ function meterPalabraEnDiccionario(palabra, arrayPalsDeEsaLong){
 
 }
 
-/*FUNCIONALIDAD EXTRA COMPROBAR PASATIEMPO -> NOTA: ASIGNAR A BOTON ON CLICK */
+
+
+
+function estaPasatiempoCompleto(){
+
+
+
+}
+
+function peticionSolucion(URL){
+
+    //Crea un nuevo objeto XMLHttpRequest
+var xhr = new XMLHttpRequest();
+var pasatiempo = URL.substring(URL.length-16, URL.length-5);
+var url = "http://localhost:5000/soluciones/"+pasatiempo; //
+
+console.log(url);
+
+//Esto se llamará después de que la respuesta se reciba
+
+xhr.onload = function() { //para no detectar estados intermedios uso onload
+ 
+    if (xhr.status != 200) { // analiza el estado HTTP de la respuesta 200 = respuesta OK; != no ha ido bien la peticion
+    
+        alert(`Error ${xhr.status}: ${xhr.statusText}`); // ej. 404: No encontrado
+
+    }else { //muestra el resultado
+    
+        //recibo las respuestas solucion del pasatiempo
+        //Recibo un json como un string (recordemos que no deja de ser texto)
+        //tengo que parsear el json string a objeto de javascript para poder accederlo normalmente
+        solucionPasatiempo = JSON.parse(xhr.responseText);
+        console.log(solucionPasatiempo.Fila1);
+   
+    }
+};
+
+
+xhr.onerror = function() {
+  alert("Solicitud fallida");
+};
+
+
+ //compongo la peticion GET para la URL establecida
+ xhr.open('GET', url, false); //false para que sea sincrona
+
+ //Envía la solicitud a la red
+ xhr.send();
+
+}
+
 function comprobarPasatiempo(){
 
+    //Lo primero traeré la solución correspondiente al pasatiempo elegido mediante una petición
+            
+        //cojo la URL que identifica mi pasatiempo y se la paso al metodo que hace la peticion
 
-    //recorro el form como ya se y voy sacando las lineas y pasandoselas al metodo que me comprueba si la palabra esta en el diccionario
+    peticionSolucion(window.location.href);
+
+
+
+    //recorro el form con un bucle y voy sacando las lineas y pasandoselas al metodo que me comprueba si la palabra esta en el diccionario
     contador = 0;
     str = "";
 
@@ -697,23 +754,24 @@ function comprobarPasatiempo(){
             str = str + input.value;
             contador++;
 
-            if(contador == 4){ //ya tenemos una palabra
-                if(existeEnDiccionario(str.toLowerCase()) == false){ //si alguna palabra no esta en el diccionario
+            if(contador == 4){ //ya tenemos una palabra completa (4 letras concatenadas)
+               
 
-                    pistasCorrectas = comprobarPistas();
-                    solsIntermCorrectas = comprobarSolsIntermedias();
 
-                    if(pistasCorrectas && solsIntermCorrectas){ //las dos son true
-                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                    }else if(!pistasCorrectas && !solsIntermCorrectas){ //las dos son falsas
-                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                    }else if(pistasCorrectas == false){ //una es falsa
-                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                    }else if(solsIntermCorrectas == false){ //la otra es falsa
-                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                    }
-                    return;
-                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 str = ""; //limpio la palabra porque ya la validé con el diccionario
                 contador = 0;
@@ -730,23 +788,19 @@ function comprobarPasatiempo(){
             contador++;
 
             if(contador == 6){ //ya tenemos una palabra
-                if(existeEnDiccionario(str.toLowerCase()) == false){ //si alguna palabra no esta en el diccionario
 
-                    pistasCorrectas = comprobarPistas();
-                    solsIntermCorrectas = comprobarSolsIntermedias();
 
-                    if(pistasCorrectas && solsIntermCorrectas){ //las dos son true
-                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                    }else if(!pistasCorrectas && !solsIntermCorrectas){ //las dos son falsas
-                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                    }else if(pistasCorrectas == false){ //una es falsa
-                        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                    }else if(solsIntermCorrectas == false){ //la otra es falsa
-                        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas NO son correctas.\nHay palabras que NO pertenecen al diccionario.");
-                        console.log("aaaaaaaaaaaa");
-                    }
-                    return;
-                }
+
+
+
+
+
+
+
+
+
+
+
 
                 str = ""; //limpio la palabra porque ya la validé con el diccionario
                 contador = 0;
@@ -969,3 +1023,4 @@ var pasatiempoLocal = "";
 var permitirAlmLocal = false;
 var diccionario;
 var contadorPistas = 3;
+var solucionPasatiempo = null;
