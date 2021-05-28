@@ -83,10 +83,22 @@ diccionario = [];
 
 
         /*PARA QUE NO DE FALLO METER EN DICCIONARIO LAS PALABRAS FALTANTES DE LA SOLUCION*/
+        /*PASATIEMPO DADO*/
     //palabrDeCuatro = meterPalabraEnDiccionario("nací", palabrDeCuatro);
     //palabrDeCuatro = meterPalabraEnDiccionario("nace", palabrDeCuatro);
     //palabrDeSeis = meterPalabraEnDiccionario("remato", palabrDeSeis);
     //palabrDeSeis = meterPalabraEnDiccionario("tolero", palabrDeSeis);
+
+        /*MIS PASATIEMPOS*/
+    palabrDeCuatro = meterPalabraEnDiccionario("rimo", palabrDeCuatro);
+    palabrDeSeis = meterPalabraEnDiccionario("amarás", palabrDeSeis);
+    palabrDeSeis = meterPalabraEnDiccionario("atarás", palabrDeSeis);
+    palabrDeSeis = meterPalabraEnDiccionario("atrasa", palabrDeSeis);
+    palabrDeSeis = meterPalabraEnDiccionario("abrasa", palabrDeSeis);
+
+    
+    palabrDeSeis = meterPalabraEnDiccionario("aparto", palabrDeSeis);
+
 
 
     
@@ -459,7 +471,6 @@ function buscarPistas(){
      //Saco la palabra del campo de busqueda y la paso a minusculas
 
     letras = document.getElementById("inputPistas").value.toLowerCase();
-    console.log(letras)
     
     if(letras.length == 4){ //si las letras a buscar son 4
        pos = 0;
@@ -682,9 +693,28 @@ function meterPalabraEnDiccionario(palabra, arrayPalsDeEsaLong){
 
 
 
+/*PRIMERO COMPROBAMOS SI COMPLETO Y DESPUES COTEJAMOS LA SOLUCIÓN*/
 
 function estaPasatiempoCompleto(){
+    
+    //antes de llamar a comprobar la solucion hay que comprobar que no haya casillas sin rellenar
+    formulario = document.getElementById("tablaJuego").elements; //cojo el formulario que tiene los inputs que forman el tablero
 
+    for(i = 0 ; i < formulario.length ; i++){
+        
+        input = formulario.item(i); //cojo cada elemento input del formulario
+        contenidoCasilla = input.value;
+
+        if(contenidoCasilla == ""){
+
+            alert("Existen casillas vacantes. Por favor, debe rellenarlas todas para poder dar solución al pasatiempo.");
+            return;
+
+        }
+
+    }
+
+    comprobarPasatiempo(); //si se llega a aquí, es porque todas están completas, entonces SI comrpuebo
 
 
 }
@@ -694,9 +724,8 @@ function peticionSolucion(URL){
     //Crea un nuevo objeto XMLHttpRequest
 var xhr = new XMLHttpRequest();
 var pasatiempo = URL.substring(URL.length-16, URL.length-5);
-var url = "http://localhost:5000/soluciones/"+pasatiempo; //
+var url = "http://localhost:5000/soluciones/"+pasatiempo; //Del otro método traigo la URL de la página que estoy viendo para coger de ahí el pasatiempo y adjuntarselo a la de la peticion de la carpeta soluciones (debemos pedir a una url existente dentro del server)
 
-console.log(url);
 
 //Esto se llamará después de que la respuesta se reciba
 
@@ -744,6 +773,9 @@ function comprobarPasatiempo(){
     //recorro el form con un bucle y voy sacando las lineas y pasandoselas al metodo que me comprueba si la palabra esta en el diccionario
     contador = 0;
     str = "";
+    iter = 1;
+    palabrasFalladas = [];
+    pasatiempoCorrecto = true;
 
     formulario = document.getElementById("tablaJuego").elements; //recorro el formulario que tiene los inputs que forman el tablero
 
@@ -756,25 +788,19 @@ function comprobarPasatiempo(){
 
             if(contador == 4){ //ya tenemos una palabra completa (4 letras concatenadas)
                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                /*Como recorremos por orden, puedo seguir el mismo orden del objeto solución*/
+                        //objeto["clave"] equivale a objeto.clave
+                if(str.toLowerCase() != solucionPasatiempo["Fila"+iter]){ //la palabra no corresponde con la palabra solucion 
+                    //palabra incorrecta
+                    palabrasFalladas.push(str.toLowerCase()); //anexa por el final
+                    pasatiempoCorrecto = false;
+                }
 
 
 
                 str = ""; //limpio la palabra porque ya la validé con el diccionario
                 contador = 0;
+                iter++; //paso a la siguiente fila de la solucion que estoy mirando
             }
         }
 
@@ -789,89 +815,42 @@ function comprobarPasatiempo(){
 
             if(contador == 6){ //ya tenemos una palabra
 
+                /*Como recorremos por orden, puedo seguir el mismo orden del objeto solución*/
+
+                if(str.toLowerCase() != solucionPasatiempo["Fila"+iter]){ //la palabra no corresponde con la palabra solucion
+                    //palabra incorrecta
+                    palabrasFalladas.push(str.toLowerCase()); //anexa por el final
+                    pasatiempoCorrecto = false;
+                }
 
 
-
-
-
-
-
-
-
-
-
-
-
+                
                 str = ""; //limpio la palabra porque ya la validé con el diccionario
                 contador = 0;
+                iter++; //paso a la siguiente fila de la solucion que estoy mirando
 
             }
         }
     
-    //CAMINO DE ÉXITO (todas las palabras estaban en el diccionario):
-    pistasCorrectas = comprobarPistas();
-    solsIntermCorrectas = comprobarSolsIntermedias();
-    if(pistasCorrectas && solsIntermCorrectas){
-        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
-    }else if(!pistasCorrectas && !solsIntermCorrectas){ //las dos son falsas
-        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas NO son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
-    
-    }else if(pistasCorrectas == false){
-        alert("Algunas de las cuatro pistas 1,2,3,4 NO son correctas.\nLas transformaciones entre ellas son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
+    //Ya tengo comprobado con la solucion todo el pasatiempo y guardadas, si procede, las palabras erróneas
 
-    }else if(solsIntermCorrectas == false){
-        alert("Las cuatro pistas 1,2,3,4 son correctas.\nLas transformaciones entre ellas NO son correctas.\nTodas las palabras pertenecen al diccionario.\n ¡¡¡FELICIDADES!!!");
+    if(pasatiempoCorrecto == false){
+        //el pasatiempo está mal
 
-    }
+        alert("La solución no es correcta, revise las siguientes palabras: \n"+palabrasFalladas); //pinto todo el array que las recopila
 
-
-
-}
-
-
-/*FUNCIONALIDAD EXTRA: COMPROBAR LAS DEFINICIONES*/
-function comprobarPistas(){
-    //verifica que las palabras introducidas en las pistas corresponden con las definiciones dadas
-    pistasBuenas = ["CLAN","PENA","REMATO","TORERO"];
-
-    error = "Pistas Incorrectas: ";
-
-    pista1 = document.getElementById("a1").value + document.getElementById("b1").value + document.getElementById("c1").value + document.getElementById("d1").value;
-    pista2 = document.getElementById("a6").value + document.getElementById("b6").value + document.getElementById("c6").value + document.getElementById("d6").value;
-    pista3 = document.getElementById("a7").value + document.getElementById("b7").value + document.getElementById("c7").value + document.getElementById("d7").value + document.getElementById("e7").value + document.getElementById("f7").value;
-    pista4 = document.getElementById("a12").value + document.getElementById("b12").value + document.getElementById("c12").value + document.getElementById("d12").value + document.getElementById("e12").value + document.getElementById("f12").value;
-
-    if(pista1 != pistasBuenas[0]){  //voy concatenando un mensaje donde indico las pistas erroneas
-        error = error + "1 ";
-    }
-    if(pista2 != pistasBuenas[1]){
-        error = error + "2 ";
-    }
-    if(pista3 != pistasBuenas[2]){
-        error = error + "3 ";
-
-    }
-    if(pista4 != pistasBuenas[3]){
-        error = error + "4 ";
-
-    }
-
-    if(error.length != 20){
-       alert(error);
-    }
-
-    if(error.length == 20){
-        //Las cuatro pistas son correctas
-        return true;
     }else{
-        return false;
+
+        alert("¡¡FELICIDADES!! La solución es correcta, has completado el pasatiempo.");
+
     }
-
-
+    
 
 }
 
-/*FUNCIONALIDAD EXTRA: COMPROBAR PALABRAS INTERMEDIAS*/
+
+/*
+//FUNCIONALIDAD EXTRA: COMPROBAR PALABRAS INTERMEDIAS
 function comprobarSolsIntermedias(){
 
     formulario = document.getElementById("tablaJuego").elements; //recorro el formulario que tiene los inputs que forman el tablero
@@ -879,7 +858,7 @@ function comprobarSolsIntermedias(){
     i = 0;
     fila = 1;
    
-        /*voy a mirar 3 a 3 las palabras para ver si van siendo correctas según la descripcion que se nos da*/
+        //voy a mirar 3 a 3 las palabras para ver si van siendo correctas según la descripcion que se nos da
 
     while(true){ 
 
@@ -991,6 +970,7 @@ function comprobarSolsIntermedias(){
     return true;
 }
 
+
 function siguienteCambiadaUnaLetra(palabra, formulario, pos, longPalabra){
 
     sigPalabra = "";
@@ -1017,6 +997,9 @@ function siguienteCambiadaUnaLetra(palabra, formulario, pos, longPalabra){
     return true;
 
 }
+*/
+
+
 
 
 var pasatiempoLocal = "";

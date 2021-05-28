@@ -33,6 +33,12 @@ servidor.get('/soluciones/:idPasatiempo', (request, response) =>{
 //despues de verificar los enrutamientos, despliego hacia el cliente la página principal
 servidor.use(express.static('public'));
 
+
+
+
+
+
+
 //Ponemos en marcha a escuchar el server
 servidor.listen(servidor.get('puertoServidor'), () => {
     console.log('Servidor escuchando en el puerto ' + servidor.get('puertoServidor'));

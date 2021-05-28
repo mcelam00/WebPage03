@@ -137,6 +137,17 @@ h2{
 }
 
 
+.Boton2{
+    font-size: 15px;
+    padding: 8px; /*alto boton*/
+    width: 92%;
+    background-color: #1b7f9b; 
+    border: none; /*sin borde*/
+    color: white; /*color del texto*/
+    text-align: center; /*alineado en el centro del boton*/
+    border-radius: 8px; /*borde redondeado*/
+}
+
 
 
 
