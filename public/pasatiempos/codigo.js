@@ -123,8 +123,15 @@ diccionario = [];
 
 
 function existePasatiempoGuardado(){
+
+    //Con la URL miro el nombre del pasatiempo y como es el mismo que uso para guardarlo, lo saco y busco por él.
+
+    URLPasatiempoActual = window.location.href; 
+    pasatiempo = URLPasatiempoActual.substring(URLPasatiempoActual.length-16, URLPasatiempoActual.length-5);
+
+
     
-    if(localStorage.getItem("pasatiempo1") != null){ //si es null, es que no se ha guardado ninguna solucion parcial
+    if(localStorage.getItem(pasatiempo) != null){ //si es null, es que no se ha guardado ninguna solucion parcial
         
         //si es disinto a null pregunto si se quiere cargar el contenido
     
@@ -132,7 +139,7 @@ function existePasatiempoGuardado(){
         
         if(respuesta == true){ //si dice que si se carga
     
-            mostrarPasatiempoGuardado();
+            mostrarPasatiempoGuardado(pasatiempo);
     
         }else{ 
              //si no quiere recuperarlo se borra
@@ -141,11 +148,11 @@ function existePasatiempoGuardado(){
     }
 }
 
-function mostrarPasatiempoGuardado(){
+function mostrarPasatiempoGuardado(pasatiempo){
     
     //cargo los valores guardados en las celdas del tablero
 
-    tablero = localStorage.getItem("pasatiempo1");
+    tablero = localStorage.getItem(pasatiempo);
 
 
     
@@ -583,8 +590,11 @@ function autoguardarCelda(Id){
                 }
         }
 
+        /*LO GUARDO PROPIAMENTE*/
 
-        localStorage.setItem("pasatiempo1", pasatiempoLocal); //guardo en el almacenamiento local la cadena que representa el tablero en el estado actual        
+        URLPasatiempoActual = window.location.href; //cojo la url de la pagina que estamos viendo que incluira el nombre del pasatiempo
+        nombre = URLPasatiempoActual.substring(URLPasatiempoActual.length-16, URLPasatiempoActual.length-5);
+        localStorage.setItem(nombre, pasatiempoLocal); //guardo en el almacenamiento local la cadena que representa el tablero en el estado actual para el pasatiempo actual     
         //console.log(localStorage.getItem("pasatiempo1"));
 
 
@@ -610,7 +620,11 @@ function permitirAlmacenLocal(){
 
 function confirmacionBorrado(){
 
-    if(localStorage.getItem("pasatiempo1") != null){
+    URLPasatiempoActual = window.location.href; 
+    pasatiempo = URLPasatiempoActual.substring(URLPasatiempoActual.length-16, URLPasatiempoActual.length-5);
+
+
+    if(localStorage.getItem(pasatiempo) != null){
     respuesta = confirm("¿Está seguro de que desea borrar la solución parcial autoguardada?");
         
         if(respuesta == true){ //si dice que si la borramos
@@ -624,7 +638,53 @@ function confirmacionBorrado(){
 }
 
 function borrarAlmLocal(){
-    localStorage.clear();
+
+    //Miro el pasatiempo que tengo en pantalla
+    URLPasatiempoActual = window.location.href; 
+    pasatiempo = URLPasatiempoActual.substring(URLPasatiempoActual.length-16, URLPasatiempoActual.length-5);
+
+    //traigo del almacenamiento los tres pasatiempos
+    pasatiempo1 = localStorage.getItem("pasatiempo1");
+    pasatiempo2 = localStorage.getItem("pasatiempo2");
+    pasatiempo3 = localStorage.getItem("pasatiempo3");
+
+    //si pido borrar alm local o descartar la solucion solo quiero que se descarte del pasatiempo que veo, no de todos
+    //entonces limpio todo, pero vuelvo a grabar los otros dos por eso traje todos a variables.
+
+    if(pasatiempo == "pasatiempo1"){
+        localStorage.clear();
+
+        if(pasatiempo2 != null){
+            localStorage.setItem("pasatiempo2", pasatiempo2);
+        } 
+        if (pasatiempo3 != null){
+            localStorage.setItem("pasatiempo3", pasatiempo3);
+        }
+
+
+    }else if(pasatiempo == "pasatiempo2"){
+        localStorage.clear();
+
+        if(pasatiempo1 != null){
+            localStorage.setItem("pasatiempo1", pasatiempo1);
+        }
+        if(pasatiempo3 != null){
+            localStorage.setItem("pasatiempo3", pasatiempo3);
+        }
+
+    }else if(pasatiempo == "pasatiempo3"){
+        localStorage.clear();
+
+        if(pasatiempo1 != null){
+            localStorage.setItem("pasatiempo1", pasatiempo1);
+        }
+        if(pasatiempo2 != null){
+            localStorage.setItem("pasatiempo2", pasatiempo2);
+        }
+
+    }
+
+
 }
 
 
